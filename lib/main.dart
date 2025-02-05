@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_todo_app/controllers/todoController.dart';
 import 'package:flutter_todo_app/models/todo.dart';
 
@@ -34,15 +35,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TodoController _todoController = TodoController();
   List<Todo> todosList = [];
-  
+  late String newTodo;
+  late TextEditingController _controller;
+
   @override
   void initState() {
     super.initState();
     todosList = _todoController.getTodosList();
+    _controller = TextEditingController();
   }
 
-  void _incrementCounter() {
-    setState(() {});
+  void _addTodo(String todo) {
+    newTodo = todo;
+    setState(() {
+      _todoController.add(todo: newTodo);
+      _controller.clear();
+    });
   }
 
   @override
@@ -109,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    displayTodo(todosList: todosList),
+                    DisplayTodo(todosList: todosList),
                   ],
                 ),
               )
@@ -131,11 +139,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   hintText: "Add a new todo item",
                   borderRadius: 10,
                   padding: 10,
+                  submitInput: _addTodo,
+                  controller: _controller,
                 ),
               ),
               FloatingActionButton(
                 backgroundColor: Colors.deepPurple,
-                onPressed: _incrementCounter,
+                onPressed: () {
+                  if (_controller.text.isNotEmpty) {
+                    _addTodo(_controller.text);
+                  }
+                },
                 tooltip: 'Add Todo',
                 child: const Icon(
                   Icons.add,
@@ -150,8 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class displayTodo extends StatelessWidget {
-  const displayTodo({
+class DisplayTodo extends StatelessWidget {
+  const DisplayTodo({
     super.key,
     required this.todosList,
   });
@@ -160,14 +174,20 @@ class displayTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: todosList.length,
-      itemBuilder: (context, index) {
-        return TodoItem(
-            todoText: todosList[index].todo,
-            checkTodo: todosList[index].checkTodo);
-      },
+    return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.62,
+        ),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: todosList.length,
+          itemBuilder: (context, index) {
+            return TodoItem(
+                todoText: todosList[index].todo,
+                checkTodo: todosList[index].checkTodo);
+          },
+        ),
+     
     );
   }
 }
@@ -253,6 +273,8 @@ class CustomTextInput extends StatelessWidget {
   final IconData? prefixIcon;
   final double borderRadius;
   final double padding;
+  final Function? submitInput;
+  final TextEditingController? controller;
 
   const CustomTextInput({
     super.key,
@@ -260,6 +282,8 @@ class CustomTextInput extends StatelessWidget {
     this.prefixIcon,
     required this.borderRadius,
     required this.padding,
+    this.submitInput,
+    this.controller,
   });
 
   @override
@@ -267,6 +291,8 @@ class CustomTextInput extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(padding),
       child: TextField(
+        controller: controller,
+        onSubmitted: submitInput as ValueChanged<String>?,
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
