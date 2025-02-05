@@ -19,4 +19,16 @@ class TodoController {
       setTodosList(todoslist: newList);
     }
   }
+
+  // Remove todo
+  void remove({required int id}) {
+    List<Todo> newList = getTodosList();
+    for (Todo todo in newList) {
+      if (todo.id == id) {
+        newList.removeWhere((todo) => todo.id == id);
+      } else {
+        print("Id non trouvé");
+      }
+    }
+  }
 }
