@@ -47,26 +47,35 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            
             Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.green, width: 3,),
+                border: Border.all(
+                  color: Colors.green,
+                  width: 3,
+                ),
                 borderRadius: BorderRadius.circular(50),
               ),
               child: SizedBox(
                 child: Icon(Icons.person, size: 30),
-                  
               ),
             ),
           ],
         ),
       ),
-      
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+
+      body: Container(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(65, 177, 177, 177),
+        ),
+        child: Center(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Input Search
+              SearchInput()
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -78,6 +87,31 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.white,
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class SearchInput extends StatelessWidget {
+  const SearchInput({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TextField(
+        decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: BorderSide.none,
+        ),
+        prefixIcon: Icon(Icons.search),
+        hintText: "Search",
+        ),
+      ),
     );
   }
 }
