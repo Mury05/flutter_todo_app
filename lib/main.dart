@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/controllers/todoController.dart';
+import 'package:flutter_todo_app/models/todo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +32,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TodoController _todoController = TodoController();
+  List<Todo> todosList = [];
+  
+  @override
+  void initState() {
+    super.initState();
+    todosList = _todoController.getTodosList();
+  }
+
   void _incrementCounter() {
     setState(() {});
   }
@@ -72,7 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Input Search
-              CustomTextInput(hintText: "Search", prefixIcon: Icons.search, borderRadius: 30, padding: 16,),
+              CustomTextInput(
+                hintText: "Search",
+                prefixIcon: Icons.search,
+                borderRadius: 30,
+                padding: 16,
+              ),
 
               SizedBox(
                 height: 20,
@@ -93,21 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    Todo(todoText: "Dinner with Jenny", checkTodo: false),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Todo(
-                        todoText: "Work on mobile apps for 2 hour",
-                        checkTodo: true),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Todo(todoText: "Team Meeting", checkTodo: false),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Todo(todoText: "Check Emails", checkTodo: false),
+                    displayTodo(todosList: todosList),
                   ],
                 ),
               )
@@ -125,9 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Row(
             children: [
               Expanded(
-                child: CustomTextInput(hintText: "Add a new todo item", borderRadius: 10,padding: 10,),
+                child: CustomTextInput(
+                  hintText: "Add a new todo item",
+                  borderRadius: 10,
+                  padding: 10,
+                ),
               ),
-
               FloatingActionButton(
                 backgroundColor: Colors.deepPurple,
                 onPressed: _incrementCounter,
@@ -145,10 +150,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class Todo extends StatelessWidget {
+class displayTodo extends StatelessWidget {
+  const displayTodo({
+    super.key,
+    required this.todosList,
+  });
+
+  final List<Todo> todosList;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: todosList.length,
+      itemBuilder: (context, index) {
+        return TodoItem(
+            todoText: todosList[index].todo,
+            checkTodo: todosList[index].checkTodo);
+      },
+    );
+  }
+}
+
+class TodoItem extends StatelessWidget {
   final String todoText;
   final bool checkTodo;
-  const Todo({
+  const TodoItem({
     super.key,
     required this.todoText,
     required this.checkTodo,
@@ -156,59 +183,67 @@ class Todo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(18)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(18)),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Checkbox(
-                activeColor: Colors.deepPurple,
-                checkColor: Colors.white,
-                side: BorderSide(color: Colors.deepPurple, width: 2),
-                value: false,
-                onChanged: (bool? newValue) {
-                  newValue = checkTodo;
-                },
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Container(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.5,
-                ),
-                child: Text(
-                  todoText,
-                  style: TextStyle(
-                    fontSize: 18,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Checkbox(
+                    activeColor: Colors.deepPurple,
+                    checkColor: Colors.white,
+                    side: BorderSide(color: Colors.deepPurple, width: 2),
+                    value: false,
+                    onChanged: (bool? newValue) {
+                      newValue = checkTodo;
+                    },
                   ),
-                  overflow: TextOverflow.visible,
-                ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.5,
+                    ),
+                    child: Text(
+                      todoText,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                ],
               ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              )
             ],
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  color: Colors.red, borderRadius: BorderRadius.circular(5)),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-                size: 20,
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+      ],
     );
   }
 }
@@ -222,7 +257,9 @@ class CustomTextInput extends StatelessWidget {
   const CustomTextInput({
     super.key,
     required this.hintText,
-    this.prefixIcon, required this.borderRadius, required this.padding,
+    this.prefixIcon,
+    required this.borderRadius,
+    required this.padding,
   });
 
   @override
