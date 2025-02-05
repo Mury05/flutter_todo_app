@@ -178,14 +178,17 @@ class Todo extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-                color: Colors.red, borderRadius: BorderRadius.circular(5)),
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-              size: 20,
+          GestureDetector(
+            onTap: (){},
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: Colors.red, borderRadius: BorderRadius.circular(5)),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           )
         ],
