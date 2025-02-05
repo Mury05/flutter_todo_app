@@ -65,15 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       body: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 232, 230, 235)
-        ),
+        decoration:
+            BoxDecoration(color: const Color.fromARGB(255, 232, 230, 235)),
         child: Center(
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Input Search
-              SearchInput(),
+              CustomTextInput(hintText: "Search", prefixIcon: Icons.search, borderRadius: 30, padding: 16,),
 
               SizedBox(
                 height: 20,
@@ -116,13 +115,30 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple,
-        onPressed: _incrementCounter,
-        tooltip: 'Add Todo',
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(65, 219, 219, 219),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomTextInput(hintText: "Add a new todo item", borderRadius: 10,padding: 10,),
+              ),
+
+              FloatingActionButton(
+                backgroundColor: Colors.deepPurple,
+                onPressed: _incrementCounter,
+                tooltip: 'Add Todo',
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -179,7 +195,7 @@ class Todo extends StatelessWidget {
             ],
           ),
           GestureDetector(
-            onTap: (){},
+            onTap: () {},
             child: Container(
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
@@ -197,25 +213,32 @@ class Todo extends StatelessWidget {
   }
 }
 
-class SearchInput extends StatelessWidget {
-  const SearchInput({
+class CustomTextInput extends StatelessWidget {
+  final String hintText;
+  final IconData? prefixIcon;
+  final double borderRadius;
+  final double padding;
+
+  const CustomTextInput({
     super.key,
+    required this.hintText,
+    this.prefixIcon, required this.borderRadius, required this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(padding),
       child: TextField(
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide: BorderSide.none,
           ),
-          prefixIcon: Icon(Icons.search),
-          hintText: "Search",
+          prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+          hintText: hintText,
         ),
       ),
     );
