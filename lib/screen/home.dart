@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _deleteTodo({required int id}) {
+  void _deleteTodo(int id) {
     setState(() {
       _todoController.remove(id: id);
     });
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    DisplayTodo(todosList: todosList),
+                    DisplayTodo(todosList: todosList, deleteTodo: _deleteTodo),
                   ],
                 ),
               )
@@ -149,10 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class DisplayTodo extends StatelessWidget {
-  // final Function deleteTodo;
+  final Function(int) deleteTodo;
   const DisplayTodo({
     super.key,
     required this.todosList,
+    required this.deleteTodo,
   });
 
   final List<Todo> todosList;
@@ -161,16 +162,17 @@ class DisplayTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.62,
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
       ),
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: todosList.length,
         itemBuilder: (context, index) {
           return TodoItem(
+            id: todosList[index].id,
             todoText: todosList[index].todo,
             checkTodo: todosList[index].checkTodo,
-            // deleteTodo: deleteTodo(),
+            deleteTodo: deleteTodo,
           );
         },
       ),
@@ -181,12 +183,12 @@ class DisplayTodo extends StatelessWidget {
 class TodoItem extends StatelessWidget {
   final String todoText;
   final bool checkTodo;
-  // final GestureTapCallback deleteTodo;
+  final Function(int) deleteTodo;
+  final int id;
   const TodoItem({
     super.key,
     required this.todoText,
-    required this.checkTodo,
-    // required this.deleteTodo,
+    required this.checkTodo, required this.deleteTodo, required this.id,
   });
 
   @override
@@ -224,7 +226,7 @@ class TodoItem extends StatelessWidget {
                     child: Text(
                       todoText,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18,                         
                       ),
                       overflow: TextOverflow.visible,
                     ),
@@ -232,7 +234,7 @@ class TodoItem extends StatelessWidget {
                 ],
               ),
               GestureDetector(
-                // onTap: deleteTodo,
+                onTap: ()=> deleteTodo(id),
                 child: Container(
                   padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(

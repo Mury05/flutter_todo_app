@@ -26,8 +26,6 @@ class TodoController {
     for (Todo todo in newList) {
       if (todo.id == id) {
         newList.removeWhere((todo) => todo.id == id);
-      } else {
-        print("Id non trouvé");
       }
     }
   }
