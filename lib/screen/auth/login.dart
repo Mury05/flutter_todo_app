@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/models/user.dart';
+import 'package:flutter_todo_app/screen/auth/register.dart';
 import 'package:flutter_todo_app/screen/home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,31 +48,38 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(65, 219, 219, 219),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              padding: EdgeInsets.all(2),
-              child: SizedBox(
-                child: Icon(Icons.login, size: 30),
-              ),
-            ),
-          ],
-        ),
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Center(
-                    child: Text(
-                  "Login",
-                  style: TextStyle(fontSize: 25),
+                    child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // Aligne le texte à gauche
+                  children: [
+                    Text(
+                      "Welcome Back",
+                      style: TextStyle(
+                        fontSize: 40, // Augmente la taille de la police
+                        fontWeight: FontWeight.bold, // Met le texte en gras
+                        color: Colors.deepPurple, // Change la couleur du texte
+                      ),
+                    ),
+                    SizedBox(height: 1), // Espacement entre les textes
+                    Text(
+                      "Use your email or username to login",
+                      style: TextStyle(
+                        fontSize: 15, // Taille de la police réduite
+                        color: Colors.grey[600], // Couleur grise pour le texte
+                      ),
+                    ),
+                  ],
                 )),
+              ),
+              SizedBox(
+                height: 50,
               ),
               Text(
                 errorMessage,
@@ -126,19 +134,24 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 62),
-                      child: Text('Forgot your login details? '),
+                      padding: const EdgeInsets.all( 2),
+                      child: Text('Don\'t have an account? '),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 1.0),
                       child: InkWell(
                           onTap: () {
-                            print('hello');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterPage()));
                           },
                           child: Text(
-                            'Get help logging in.',
+                            'Sign Up',
                             style: TextStyle(
                                 fontSize: 14, color: Colors.deepPurple),
                           )),
