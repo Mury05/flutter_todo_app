@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/controllers/usercontroller.dart';
 import 'package:flutter_todo_app/screen/auth/login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -15,19 +16,55 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final UserController _userController = UserController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
   void _register() {
     if (_formKey.currentState!.validate()) {
-      String username = _usernameController.text;
-      String email = _emailController.text;
-      String password = _passwordController.text;
-
-      // Simuler l'inscription
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Compte créé pour $username")),
+      String? error = _userController.register(
+        _usernameController.text,
+        _emailController.text,
+        _passwordController.text,
       );
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              error,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: const Color.fromARGB(255, 222, 107, 99),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            duration: Duration(seconds: 6),
+          ),
+        );
+      } else {
+        Navigator.pushNamed(context, '/login');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Compte créé pour ${_usernameController.text}",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            duration: Duration(seconds: 6),
+          ),
+        );
+      }
     }
   }
 
@@ -71,12 +108,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
-                      labelText: "Nom d'utilisateur",
+                      labelText: "Username",
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Le nom d'utilisateur est requis";
+                        return "Le username est requis";
                       } else if (value.length < 3) {
                         return "Mininum 3 caractères";
                       }
@@ -167,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Bouton Inscription
                   SizedBox(
                     height: 65,
-                width: 360,
+                    width: 360,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
@@ -177,7 +214,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         onPressed: _register,
                         child: Text("S'inscrire",
-                            style: TextStyle(color: Colors.white, fontSize: 20)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
                       ),
                     ),
                   ),
@@ -196,10 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           padding: const EdgeInsets.only(left: 1.0),
                           child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                Navigator.pushNamed(context, '/');
                               },
                               child: Text(
                                 'Login',
