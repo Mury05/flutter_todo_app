@@ -48,7 +48,75 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       drawer: Drawer(
         child: ListView(
-          children: [ListTile(title: Text("Accueil"))],
+          padding: const EdgeInsets.all(0),
+          children: [
+            SizedBox(
+              height: 60,
+              child: const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple,
+                ), //BoxDecoration
+                child: Text(''),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Todo App ',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    'Welcome to navigation bar',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            ListTile(
+              hoverColor:
+                  const Color.fromARGB(255, 176, 145, 230), 
+              leading: const Icon(
+                Icons.home,
+                color: Colors.deepPurple, 
+              ),
+              title: Text(
+                'Home',
+                style: TextStyle(
+                  color: Colors.deepPurple[800], 
+
+                ),
+              ),
+              
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              hoverColor:
+                  const Color.fromARGB(255, 176, 145, 230), 
+              leading: const Icon(
+                Icons.logout,
+                color: Colors.deepPurple, 
+              ),
+              title: Text(
+                'LogOut',
+                style: TextStyle(
+                  color: Colors.deepPurple[800], 
+
+                ),
+              ),
+              
+              onTap: () {
+                Navigator.pushNamed(context, '/');
+              },
+            ),
+          ],
         ),
       ),
       appBar: AppBar(
