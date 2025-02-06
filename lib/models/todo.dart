@@ -3,6 +3,6 @@ class Todo {
   final String todo;
   bool checkTodo;
 
-  Todo({required this.todo}) : id = DateTime.now().millisecondsSinceEpoch, checkTodo = false;
+  Todo({required this.todo}) : id = DateTime.now().microsecondsSinceEpoch, checkTodo = false;
 
 }

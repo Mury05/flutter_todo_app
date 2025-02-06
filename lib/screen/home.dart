@@ -37,6 +37,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _toggleTodoCheck(int id) {
+    setState(() {
+      _todoController.toggleCheck(id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +107,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    DisplayTodo(todosList: todosList, deleteTodo: _deleteTodo),
+                    DisplayTodo(
+                      todosList: todosList,
+                      deleteTodo: _deleteTodo,
+                      toggleCheck: _toggleTodoCheck,
+                    ),
                   ],
                 ),
               )
@@ -150,10 +160,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class DisplayTodo extends StatelessWidget {
   final Function(int) deleteTodo;
+  final Function(int) toggleCheck;
   const DisplayTodo({
     super.key,
     required this.todosList,
     required this.deleteTodo,
+    required this.toggleCheck,
   });
 
   final List<Todo> todosList;
@@ -173,6 +185,7 @@ class DisplayTodo extends StatelessWidget {
             todoText: todosList[index].todo,
             checkTodo: todosList[index].checkTodo,
             deleteTodo: deleteTodo,
+            toggleCheck: toggleCheck,
           );
         },
       ),
@@ -184,11 +197,15 @@ class TodoItem extends StatelessWidget {
   final String todoText;
   final bool checkTodo;
   final Function(int) deleteTodo;
+  final Function(int) toggleCheck;
   final int id;
   const TodoItem({
     super.key,
     required this.todoText,
-    required this.checkTodo, required this.deleteTodo, required this.id,
+    required this.checkTodo,
+    required this.deleteTodo,
+    required this.id,
+    required this.toggleCheck,
   });
 
   @override
@@ -211,9 +228,9 @@ class TodoItem extends StatelessWidget {
                     activeColor: Colors.deepPurple,
                     checkColor: Colors.white,
                     side: BorderSide(color: Colors.deepPurple, width: 2),
-                    value: false,
+                    value: checkTodo,
                     onChanged: (bool? newValue) {
-                      newValue = checkTodo;
+                      toggleCheck(id);
                     },
                   ),
                   SizedBox(
@@ -226,15 +243,17 @@ class TodoItem extends StatelessWidget {
                     child: Text(
                       todoText,
                       style: TextStyle(
-                        fontSize: 18,                         
-                      ),
+                          fontSize: 18,
+                          decoration: checkTodo
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none),
                       overflow: TextOverflow.visible,
                     ),
                   ),
                 ],
               ),
               GestureDetector(
-                onTap: ()=> deleteTodo(id),
+                onTap: () => deleteTodo(id),
                 child: Container(
                   padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(

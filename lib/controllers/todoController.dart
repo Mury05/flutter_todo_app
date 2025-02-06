@@ -3,9 +3,6 @@ import 'package:flutter_todo_app/models/todo.dart';
 class TodoController {
   List<Todo> _todosList = [
     Todo(todo: "Dinner with Jenny"),
-    Todo(todo: "Work on mobile apps for 2 hour"),
-    Todo(todo: "Team Meeting"),
-    Todo(todo: "Check Emails"),
   ];
 
   List<Todo> getTodosList() => _todosList;
@@ -22,10 +19,19 @@ class TodoController {
 
   // Remove todo
   void remove({required int id}) {
-    List<Todo> newList = getTodosList();
-    for (Todo todo in newList) {
+    for (Todo todo in _todosList) {
       if (todo.id == id) {
-        newList.removeWhere((todo) => todo.id == id);
+        _todosList.removeWhere((todo) => todo.id == id);
+        break;
+      }
+    }
+  }
+
+  void toggleCheck(int id) {
+    for (var todo in _todosList) {
+      if (todo.id == id) {
+        todo.checkTodo = !todo.checkTodo;
+        break;
       }
     }
   }
