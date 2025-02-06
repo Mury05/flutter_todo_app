@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/controllers/usercontroller.dart';
 import 'package:flutter_todo_app/models/user.dart';
 import 'package:flutter_todo_app/screen/auth/register.dart';
 import 'package:flutter_todo_app/screen/home.dart';
@@ -11,6 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final UserController _usercontroller = UserController();
   late TextEditingController _username;
   late TextEditingController _password;
   String errorMessage = '';
@@ -24,24 +26,31 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    if (_username.text.isEmpty || _password.text.isEmpty) {
+    String? error = _usercontroller.login(_username.text, _password.text);
+    if (error != null) {
       setState(() {
-        errorMessage = "All field is required";
+        errorMessage = error;
       });
     } else {
-      final user = users.firstWhere(
-          (user) =>
-              user.username == _username.text &&
-              user.password == _password.text,
-          orElse: () => User(username: '', password: ''));
-      if (user.username.isEmpty) {
-        setState(() {
-          errorMessage = "Invalid username or password";
-        });
-      } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyHomePage()));
-      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Connexion ✅",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            duration: Duration(seconds: 6),
+          ),
+        );
+      Navigator.pushNamed(context, '/home');
     }
   }
 
@@ -134,21 +143,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all( 2),
+                      padding: const EdgeInsets.all(2),
                       child: Text('Don\'t have an account? '),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 1.0),
                       child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterPage()));
+                            Navigator.pushNamed(context, '/register');
                           },
                           child: Text(
                             'Sign Up',
