@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/controllers/usercontroller.dart';
 import 'package:flutter_todo_app/screen/auth/login.dart';
+import 'package:flutter_todo_app/screen/home.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -47,6 +48,10 @@ class _RegisterPageState extends State<RegisterPage> {
         );
       } else {
         Navigator.pushNamed(context, '/login');
+      //    Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => LoginPage()),
+      // );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -235,6 +240,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: InkWell(
                               onTap: () {
                                 Navigator.pushNamed(context, '/');
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => LoginPage()),
+                                // );
                               },
                               child: Text(
                                 'Login',

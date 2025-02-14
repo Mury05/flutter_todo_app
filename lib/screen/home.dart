@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_todo_app/controllers/todocontroller.dart';
 import 'package:flutter_todo_app/models/todo.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -79,41 +80,41 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 15,
             ),
             ListTile(
-              hoverColor:
-                  const Color.fromARGB(255, 176, 145, 230), 
+              hoverColor: const Color.fromARGB(255, 176, 145, 230),
               leading: const Icon(
                 Icons.home,
-                color: Colors.deepPurple, 
+                color: Colors.deepPurple,
               ),
               title: Text(
                 'Home',
                 style: TextStyle(
-                  color: Colors.deepPurple[800], 
-
+                  color: Colors.deepPurple[800],
                 ),
               ),
-              
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              hoverColor:
-                  const Color.fromARGB(255, 176, 145, 230), 
+              hoverColor: const Color.fromARGB(255, 176, 145, 230),
               leading: const Icon(
                 Icons.logout,
-                color: Colors.deepPurple, 
+                color: Colors.deepPurple,
               ),
               title: Text(
                 'LogOut',
                 style: TextStyle(
-                  color: Colors.deepPurple[800], 
-
+                  color: Colors.deepPurple[800],
                 ),
               ),
-              
               onTap: () {
                 Navigator.pushNamed(context, '/');
+                // Navigator.push(
+                //     context,
+                //     PageTransition(
+                //         type: PageTransitionType.leftToRight,
+                //         duration: Duration(milliseconds: 800),
+                //         child: const MyHomePage()));
               },
             ),
           ],

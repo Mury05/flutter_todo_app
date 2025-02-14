@@ -5,6 +5,7 @@ import 'package:flutter_todo_app/controllers/usercontroller.dart';
 import 'package:flutter_todo_app/models/user.dart';
 import 'package:flutter_todo_app/screen/auth/register.dart';
 import 'package:flutter_todo_app/screen/home.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -39,33 +40,46 @@ class _LoginPageState extends State<LoginPage>
       isFlipped = !isFlipped;
     });
 
-     _controller.forward().then((_) {
-    // String? error = _usercontroller.login(_username.text, _password.text);
-    // if (error != null) {
-    //   setState(() {
-    //     errorMessage = error;
-    //   });
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text(
-    //         "Connexion ✅",
-    //         style: TextStyle(
-    //           color: Colors.white,
-    //           fontSize: 16,
-    //         ),
-    //       ),
-    //       backgroundColor: Colors.green,
-    //       behavior: SnackBarBehavior.floating,
-    //       shape: RoundedRectangleBorder(
-    //         borderRadius: BorderRadius.circular(12),
-    //       ),
-    //       duration: Duration(seconds: 6),
-    //     ),
-    //   );
-    Navigator.pushNamed(context, '/home');
-    // }
-     _controller.reverse();
+    _controller.forward().then((_) {
+      // String? error = _usercontroller.login(_username.text, _password.text);
+      // if (error != null) {
+      //   setState(() {
+      //     errorMessage = error;
+      //   });
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       content: Text(
+      //         "Connexion ✅",
+      //         style: TextStyle(
+      //           color: Colors.white,
+      //           fontSize: 16,
+      //         ),
+      //       ),
+      //       backgroundColor: Colors.green,
+      //       behavior: SnackBarBehavior.floating,
+      //       shape: RoundedRectangleBorder(
+      //         borderRadius: BorderRadius.circular(12),
+      //       ),
+      //       duration: Duration(seconds: 6),
+      //     ),
+      //   );
+      Navigator.pushNamed(context, '/home');
+      // Navigator.push(
+      //     context,
+      //     PageTransition(
+      //         type: PageTransitionType.rightToLeft,
+      //         duration: Duration(
+      //           milliseconds: 1200,
+      //         ),
+      //         child: MyHomePage()));
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => MyHomePage()),
+      // );
+
+      // }
+      _controller.reverse();
     });
   }
 
@@ -142,7 +156,6 @@ class _LoginPageState extends State<LoginPage>
                       hintText: 'Enter secure password'),
                 ),
               ),
-             
               SizedBox(
                 height: 50,
               ),
@@ -163,6 +176,12 @@ class _LoginPageState extends State<LoginPage>
                       child: InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, '/register');
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         type: PageTransitionType.bottomToTop,
+                            //         duration: Duration(milliseconds: 800),
+                            //         child: const RegisterPage()));
                           },
                           child: Text(
                             'Sign Up',
