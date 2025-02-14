@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/screen/auth/login.dart';
 import 'package:flutter_todo_app/screen/auth/register.dart';
 import 'package:flutter_todo_app/screen/home.dart';
+import 'package:flutter_todo_app/screen/joke.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Routing {
@@ -27,6 +28,11 @@ class Routing {
             type: PageTransitionType.rightToLeft,
             duration: Duration(milliseconds: 800),
             child: const MyHomePage());
+      case '/joke':
+        return PageTransition(
+            type: PageTransitionType.topToBottom,
+            duration: Duration(milliseconds: 800),
+            child: const JokePage());
 
       default:
         return MaterialPageRoute(
