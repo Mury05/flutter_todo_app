@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/routes/routes.dart';
 import 'package:flutter_todo_app/routes/routes2.dart';
-import 'package:flutter_todo_app/screen/auth/login.dart';
 
 void main() {
   runApp(const MyApp());
