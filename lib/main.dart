@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const LoginPage(),
-      initialRoute: '/',
+      initialRoute: '/country',
       // routes: Routes().getRoutes()
       // home: LoginPage(),
       onGenerateRoute: Routing.generateRoutes,
